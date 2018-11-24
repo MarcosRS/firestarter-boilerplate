@@ -1,10 +1,11 @@
+const webpack = require('webpack');
 const liveReloadPlugin = require('webpack-livereload-plugin');
 
 module.exports = {
     entry: './src/index.js',
     output: {
         path: __dirname,
-        filename: './public/bundle.js',
+        filename: './public/assets/bundle',
     },
     devtool: 'source-map',
     resolve: {
@@ -33,5 +34,10 @@ module.exports = {
         new liveReloadPlugin({
             appendScriptTag: true
         }),
+        new webpack.optimize.UglifyJsPlugin({
+            compress: {
+                warnings: false
+            }
+        })
     ],
 };

@@ -1,3 +1,4 @@
+// require('dotenv').config();
 const path = require('path');
 const express = require('express');
 const morgan = require('morgan');
@@ -5,19 +6,19 @@ const bodyParser = require('body-parser');
 const app = express();
 
 app.set('port', (process.env.PORT || 3000));
-const env = process.env.NODE_ENV || 'development';
+
+// const env = process.env.NODE_ENV || 'development';
 
 app.use(morgan('dev'));
 
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 
-// app.use('/api', require('./api'));
+app.use('/api', require('./routes'));
 
 app.use(express.static(path.join(__dirname, '../public')));
 
 app.get('*', (req, res) => {
-   console.log("Env var", process.env.ENVVAR);
   res.sendFile(path.join(__dirname, '../public/index.html'));
 });
 
