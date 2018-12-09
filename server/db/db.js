@@ -1,6 +1,6 @@
 const path = require('path');
 const Sequelize = require('sequelize');
-const DATABASE_URI = require(path.join(__dirname, './env')).DATABASE_URI;
+const DATABASE_URI = process.env.DATABASE_URI
 
 console.log('Opening connection to PostgreSQL');
 
