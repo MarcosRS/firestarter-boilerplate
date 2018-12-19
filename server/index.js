@@ -1,4 +1,5 @@
 require('dotenv').config();
+require('./db');
 const path = require('path');
 const express = require('express');
 const morgan = require('morgan');
@@ -6,7 +7,6 @@ const bodyParser = require('body-parser');
 const app = express();
 
 app.set('port', (process.env.PORT || 3000));
-
 // const env = process.env.NODE_ENV || 'development';
 
 app.use(morgan('dev'));
