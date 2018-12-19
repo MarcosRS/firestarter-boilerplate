@@ -1,5 +1,6 @@
 import React from 'react';
 import { Route, withRouter } from 'react-router-dom';
+import '../stylesheets/global.scss'
 
 class App extends React.Component {
     render() {
