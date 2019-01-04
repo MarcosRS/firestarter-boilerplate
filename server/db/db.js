@@ -14,5 +14,6 @@ console.log('Opening connection to PostgreSQL');
 module.exports = new Sequelize(databaseUri, {
   dialect: 'postgres',
   logging: false, // set to console.log to see the raw SQL queries
-  native: true // lets Sequelize know we can use pg-native for ~30% more speed
+  native: true, // lets Sequelize know we can use pg-native for ~30% more speed
+  operatorsAliases: false
 });
