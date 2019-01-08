@@ -54,6 +54,7 @@ class Users extends React.Component {
                     </tr>
                 </tbody>
             </table>
+            <br/>
             <Link to='/'><button className='button'>{'< Home'}</button></Link>
         </div>
       );
