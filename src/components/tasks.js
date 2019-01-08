@@ -1,4 +1,5 @@
 import React from 'react';
+import { Link } from 'react-router-dom';
 
 class Users extends React.Component {
     constructor(){
@@ -35,23 +36,29 @@ class Users extends React.Component {
                 <button className="button" onClick={ (e) => {e.preventDefault(); this.createTask}} >Create Task</button>
             </form>
             <table>
-                <tr>
+                <thead>
+                 <tr>
                     <th>User</th>
                     <th>Task</th>
                 </tr>
-                <tr>
-                    <td>Alfreds Futterkiste</td>
-                    <td>Maria Anders</td>
-                </tr>
-                <tr>
-                    <td>Centro comercial Moctezuma</td>
-                    <td>Francisco Chang</td>
-                </tr>
-                <tr>
-                    <td>Ernst Handel</td>
-                    <td>Roland Mendel</td>
-                </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>Alfreds Futterkiste</td>
+                        <td>Maria Anders</td>
+                    </tr>
+                    <tr>
+                        <td>Centro comercial Moctezuma</td>
+                        <td>Francisco Chang</td>
+                    </tr>
+                    <tr>
+                        <td>Ernst Handel</td>
+                        <td>Roland Mendel</td>
+                    </tr>
+                </tbody>
             </table>
+            <br/>
+            <Link to='/'><button className='button'>{'< Home'}</button></Link>
         </div>
       );
     }
