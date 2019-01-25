@@ -1,7 +1,7 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 
-class Users extends React.Component {
+class Tasks extends React.Component {
     constructor(){
         super()
         this.state = {
@@ -9,26 +9,74 @@ class Users extends React.Component {
                 "userId": 0,
                 "task": ''
             },
-            taskList:[]
+            taskList:[],
+            userList:[]
         }
+         this.handleChange = this.handleChange.bind(this);
+         this.createTask = this.createUser.bind(this);
+    }
+
+    async componentDidMount() {
+      const results = await Promise.all([this.getTasks(), this.getUsers()])
+      this.setState({ taskList:results[0], userList: results[1]})
     }
 
     handleChange(attr, value){
-        this.setState({[attr]: value});
+        let taskInfo = this.state.taskInfo;
+        taskInfo[attr] = value;
+        this.setState({taskInfo});
+    }
+
+     getTasks() {
+         return fetch('/api/tasks', {
+                 method: "GET"
+             })
+             .then(res => res.json())
+             .then((tasksList = []) => {
+                 return tasksList
+             })
+     }
+    
+    getUsers(){
+        return  fetch('/api/users', {
+                    method: "GET"
+                })
+                .then(res => res.json())
+                .then((userList = []) => {
+                    return userList
+                })
     }
 
     createTask() {
-
+         fetch('/api/tasks', {
+            method: "POST", 
+            headers: {
+                "Content-Type": "application/json",
+            },
+            body: JSON.stringify(this.state.taskInfo)
+        })
+        .then(res => res.json())
+        .then(newTask => {
+            let taskList = this.state.taskList;
+            userList.push(newTask);
+            this.setState({taskList});
+        })
     }
 
     render() {
+        const taskList = this.state.taskList;
+        const userList = this.state.userList;
       return (
           <div>
             <h1 className="header"><u>Task</u></h1>
+            
             <form className="form" >
                 <label className="label" >User: </label>
                 <select className="select" name="user">
-                    <option value="volvo">Juan</option>
+                    {userList.map((user, i)=>{
+                        <option key={`${user.id}`} value={`${user.id}`}>{user.name}</option>    
+                    })}
+                    
                     <option value="saab">Pablo</option>
                 </select>
                 <label className="label" >Task </label>
@@ -64,4 +112,4 @@ class Users extends React.Component {
     }
   }
 
-  export default Users
+  export default Tasks
