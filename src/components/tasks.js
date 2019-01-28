@@ -6,19 +6,21 @@ class Tasks extends React.Component {
         super()
         this.state = {
             taskInfo: {
-                "userId": 0,
+                "userId": 1,
                 "task": ''
             },
-            taskList:[],
-            userList:[]
+            taskList: [],
+            userList: {}
         }
          this.handleChange = this.handleChange.bind(this);
-         this.createTask = this.createUser.bind(this);
+         this.createTask = this.createTask.bind(this);
     }
 
-    async componentDidMount() {
-      const results = await Promise.all([this.getTasks(), this.getUsers()])
-      this.setState({ taskList:results[0], userList: results[1]})
+    componentDidMount() {
+        Promise.all([this.getTasks(), this.getUsers()])
+        .then((results) => {
+            this.setState({ taskList:results[0], userList: results[1]})
+        })
     }
 
     handleChange(attr, value){
@@ -43,7 +45,9 @@ class Tasks extends React.Component {
                 })
                 .then(res => res.json())
                 .then((userList = []) => {
-                    return userList
+                    let userListObj = {}
+                    userList.map((user)=>{userListObj[user.id] = user })
+                    return userListObj
                 })
     }
 
@@ -57,9 +61,10 @@ class Tasks extends React.Component {
         })
         .then(res => res.json())
         .then(newTask => {
+            const taskInfo = { "userId": 1, "task": ' '};
             let taskList = this.state.taskList;
-            userList.push(newTask);
-            this.setState({taskList});
+            taskList.push(newTask);
+            this.setState({taskInfo, taskList});
         })
     }
 
@@ -69,41 +74,39 @@ class Tasks extends React.Component {
       return (
           <div>
             <h1 className="header"><u>Task</u></h1>
-            
             <form className="form" >
                 <label className="label" >User: </label>
-                <select className="select" name="user">
-                    {userList.map((user, i)=>{
-                        <option key={`${user.id}`} value={`${user.id}`}>{user.name}</option>    
+                <select className="select" name="user" onChange={(e)=>{ this.handleChange('userId', Number(e.target.value)) }}>
+                    {Object.values(userList).map((user) => {
+                        return <option key={`${user.id}`} value={`${user.id}`}>{user.name}</option>    
                     })}
-                    
-                    <option value="saab">Pablo</option>
                 </select>
                 <label className="label" >Task </label>
-                <input type="text"  className="input" value={this.state.task}  onChange={(e)=>{ this.handleChange('task', e.target.value) }} />
-                <button className="button" onClick={ (e) => {e.preventDefault(); this.createTask}} >Create Task</button>
+                <input type="text" required={true}   className="input" value={this.state.task}  onChange={(e)=>{ this.handleChange('task', e.target.value) }} />
+                {(userList.length != 0)  && <button className="button" onClick={ (e) => {e.preventDefault(); this.createTask()}} >Create Task</button>}
             </form>
             <table>
                 <thead>
                  <tr>
-                    <th>User</th>
+                    <th>Id</th>
                     <th>Task</th>
+                    <th>User Id</th>
+                    <th>Created At</th>
+                    <th>Updated At</th>
                 </tr>
                 </thead>
+
                 <tbody>
-                    <tr>
-                        <td>Alfreds Futterkiste</td>
-                        <td>Maria Anders</td>
-                    </tr>
-                    <tr>
-                        <td>Centro comercial Moctezuma</td>
-                        <td>Francisco Chang</td>
-                    </tr>
-                    <tr>
-                        <td>Ernst Handel</td>
-                        <td>Roland Mendel</td>
-                    </tr>
-                </tbody>
+                     {taskList.map((task, i) => {                        
+                        return  <tr key={i}>
+                                    <td>{task.id}</td>
+                                    <td><input value={task.task} onChange={()=>{}} /> {/*<button className="pull-right"> Update </button>*/}</td>
+                                    <td>{userList[task.userId].name}</td>
+                                    <td>{task.createdAt}</td>
+                                    <td>{task.updatedAt}</td>
+                                </tr>   
+                    })}
+                </tbody>   
             </table>
             <br/>
             <Link to='/'><button className='button'>{'< Home'}</button></Link>
