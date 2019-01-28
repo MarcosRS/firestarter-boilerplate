@@ -17,3 +17,11 @@ tr:nth-child(even) {
     background-color: $primary;
   ;
 }
+
+tr input {
+    border: none;
+    width: 100%;
+    font-size: inherit;
+    background-color: inherit;
+    color: inherit;
+}
