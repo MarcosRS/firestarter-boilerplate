@@ -2,7 +2,7 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 import '../stylesheets/table.scss'
 
-class Tasks extends React.Component {
+class Home extends React.Component {
     render() {
       return (
         <div>
@@ -14,4 +14,4 @@ class Tasks extends React.Component {
     }
   }
 
-  export default Tasks
+  export default Home
